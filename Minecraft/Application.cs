@@ -1,43 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-using SharpGL;
+using OpenTK;
 
+using Minecraft.Window;
 using Minecraft.States;
 
 namespace Minecraft {
     class Application {
-        public OpenGL OpenGL { get; private set; }
+        private Stack<GameState> states;
 
         public Display Display { get; private set; }
-
-        private Stack<GameState> states;
 
         public Application(Display display) {
             Display = display;
 
-            OpenGL = new OpenGL();
+            display.OnFrameRender += DisplayOnFrameRender;
 
             states = new Stack<GameState>();
         }
 
-        public void RunMainGameLoop() {
-            while (Display.IsOpen()) {
-                Display.ProcessEvents();
+        private void DisplayOnFrameRender(object sender, FrameEventArgs e) {
+            var state = states.Peek();
 
-                // Do stuff with the states.
-                var current = states.Peek();
-
-                current.Input();
-                current.Update();
-                current.Draw();
-
-                Display.Clear();
-                Display.Update();
-            }
+            state.Draw();
         }
 
         public void PushState(GameState state) {
@@ -46,6 +31,10 @@ namespace Minecraft {
 
         public void PopState() {
             states.Pop();
+        }
+
+        public void Run() {
+            Display.Run();
         }
     }
 }

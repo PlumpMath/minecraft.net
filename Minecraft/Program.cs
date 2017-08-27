@@ -1,8 +1,7 @@
-﻿using Minecraft.States;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System;
+
+using Minecraft.States;
+using Minecraft.Window;
 
 namespace Minecraft {
     static class Program {
@@ -18,9 +17,7 @@ namespace Minecraft {
 
             app.PushState(state);
 
-            display.Init();
-            
-            app.RunMainGameLoop();
+            app.Run();
         }
     }
 }
